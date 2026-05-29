@@ -58,6 +58,11 @@ h1 {
   line-height: 1.8;
 }
 
+.at-symbol {
+  position: absolute;
+  transform: translateX(-100%); /* Moves the symbol entirely to the left of its starting point */
+}
+
 .links {
   display: inline-flex;
   flex-wrap: wrap;
