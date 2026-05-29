@@ -25,10 +25,10 @@
   <script>
     (function () {
       var ua = navigator.userAgent || '';
-      if (!/\bInstagram\b/i.test(ua) || location.pathname.endsWith('ig')) {
+      if (!/\bInstagram\b/i.test(ua) || location.pathname.endsWith('social')) {
         return;
       }
-      location.replace('ig');
+      location.replace('social');
     })();
   </script>
 </body>
