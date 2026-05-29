@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rubik:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <main>
     <h1>son im crine</h1>
@@ -17,6 +18,15 @@
 
     <p class="image-caption">twitter in the big [CURRENT_YEAR]</p>
   </main>
+  <audio id="bg-music" src="stank.mp3" autoplay></audio>
+  <script>
+  window.addEventListener('load', () => {
+    const audio = document.getElementById('bg-music');
+    audio.play().catch(error => {
+      console.log("Autoplay was blocked. Waiting for user interaction.");
+    });
+  });
+</script>
   <script>
     (function () {
       var caption = document.querySelector('.image-caption');
