@@ -50,6 +50,88 @@ h1 {
   line-height: 1.03;
 }
 
+/* Animated handle prefix: cycles between "@" and "/". Each glyph scrolls and
+   fades in from above, rests exactly where inline text would, then scrolls and
+   fades out downward, out of frame. */
+.prefix {
+  --p: 10s; /* full cycle per glyph; the visible swap happens every --p / 2.
+               Scroll in/out stays ~0.5s — set by the keyframe stops below, not --p. */
+  position: relative;
+  display: inline-block;
+  text-align: right; /* keep each glyph's right edge hugging handle */
+  vertical-align: baseline;
+  /* soft "frame" edges + clip anything scrolling beyond the title line */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+
+/* invisible "@" reserves the width of the widest glyph so handle never shifts */
+.prefix__sizer {
+  visibility: hidden;
+}
+
+.prefix__char {
+  position: absolute;
+  top: 0;
+  right: 0;
+  line-height: inherit; /* share the title's baseline */
+  opacity: 0;
+  animation: prefix-scroll var(--p) ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.prefix__char--at {
+  animation-delay: calc(var(--p) * -0.29); /* start resting on load */
+}
+
+.prefix__char--slash {
+  animation-delay: calc(var(--p) * -0.79); /* offset half a cycle from "@" */
+}
+
+@keyframes prefix-scroll {
+  0% {
+    transform: translateY(-90%); /* parked above the frame, hidden */
+    opacity: 0;
+  }
+  5% {
+    transform: translateY(0); /* quick scroll + fade into the inline rest spot (~0.5s) */
+    opacity: 1;
+  }
+  47% {
+    transform: translateY(0); /* hold at rest (~4.2s) */
+    opacity: 1;
+  }
+  52% {
+    transform: translateY(90%); /* quick scroll + fade out below the frame (~0.5s) */
+    opacity: 0;
+  }
+  52.001% {
+    transform: translateY(-90%); /* jump back above while invisible */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-90%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prefix__char {
+    animation: none;
+  }
+  .prefix__char--at {
+    opacity: 1;
+    transform: none;
+  }
+  .prefix__char--slash {
+    display: none;
+  }
+}
+
 .subtitle {
   margin: 1rem auto 1.6rem;
   max-width: 44rem;
@@ -60,7 +142,7 @@ h1 {
 
 .at-symbol {
   position: absolute;
-  transform: translateX(-100%); /* Moves the symbol entirely to the left of its starting point */
+  transform: translateX(-100%); /* move symbol entirely to the left of its starting point */
 }
 
 .links {
